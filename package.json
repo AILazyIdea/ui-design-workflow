@@ -38,7 +38,7 @@
   },
   "scripts": {
     "test": "npm run test:core",
-    "test:core": "node --test test/core.test.mjs test/mcp.test.mjs",
+    "test:core": "node --test test/core.test.mjs test/mcp.test.mjs test/installer.test.mjs",
     "test:visual": "node --test test/visual.test.mjs",
     "validate:skill": "node scripts/check-skill.mjs",
     "setup:visual": "npx playwright install chromium"
