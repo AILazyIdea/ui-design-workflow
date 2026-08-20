@@ -7,7 +7,10 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+# 已有 Node 20+ 仍可运行本项目；新安装使用 winget 提供的当前 LTS。
+# 请在当前 LTS 即将 EOL 前更新此提示值，并同步 Bash 脚本、README 和测试。
 $NODE_MIN = 20
+$NODE_RECOMMENDED_LTS = 24
 Set-Location $PSScriptRoot
 
 function Write-Step([string]$msg) { Write-Host $msg -ForegroundColor Cyan }
@@ -39,7 +42,7 @@ function Refresh-NodePath {
 
 function Get-InstallPlan {
   if (Get-Command winget -ErrorAction SilentlyContinue) {
-    return @{ Method = 'winget'; Detail = '将通过 Windows Package Manager 安装 Node.js LTS。Windows 可能要求你再次确认软件源和许可证。' }
+    return @{ Method = 'winget'; Detail = "将通过 Windows Package Manager 安装当前 Node.js LTS（目前为 Node $NODE_RECOMMENDED_LTS）。Windows 可能要求你再次确认软件源和许可证。" }
   }
   return $null
 }
@@ -59,7 +62,7 @@ function Confirm-NodeInstallation($Plan) {
 }
 
 function Install-Node($Plan) {
-  if ($Plan.Method -ne 'winget') { throw '未找到可用的自动安装方式。请从 https://nodejs.org/ 手动安装 Node 20 或更高版本。' }
+  if ($Plan.Method -ne 'winget') { throw "未找到可用的自动安装方式。请从 https://nodejs.org/ 手动安装当前 LTS（目前为 Node $NODE_RECOMMENDED_LTS）；Node $NODE_MIN 或更高版本可运行本项目。" }
   Write-Step '使用 Windows Package Manager 安装 Node.js LTS…'
   $arguments = @('install', '-e', '--id', 'OpenJS.NodeJS.LTS')
   if ($Yes) {
@@ -95,7 +98,7 @@ try {
       Write-Warn '未检测到 Node.js。'
     }
     $plan = Get-InstallPlan
-    if ($null -eq $plan) { throw '未找到可用的自动安装方式。请从 https://nodejs.org/ 手动安装 Node 20 或更高版本。' }
+    if ($null -eq $plan) { throw "未找到可用的自动安装方式。请从 https://nodejs.org/ 手动安装当前 LTS（目前为 Node $NODE_RECOMMENDED_LTS）；Node $NODE_MIN 或更高版本可运行本项目。" }
     if (-not (Confirm-NodeInstallation $plan)) {
       Write-Warn '已取消安装，未对机器做任何修改。'
       exit 2

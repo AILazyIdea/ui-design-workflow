@@ -3,7 +3,10 @@
 # 默认只检测与自检。Node.js 缺失或过旧时，必须由用户明确同意才会安装。
 set -uo pipefail
 
+# 已有 Node 20+ 仍可运行本项目；新安装统一使用当前推荐 LTS。
+# 请在该 LTS 即将 EOL 前更新此值，并同步 README、PowerShell 脚本和测试。
 NODE_MIN=20
+NODE_INSTALL_MAJOR=24
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 AUTO_INSTALL=0
 ASSUME_YES=0
@@ -64,19 +67,19 @@ choose_install_method() {
 describe_install_method() {
   case "$1" in
     nvm)
-      printf '%s\n' '将使用已有 nvm 安装 Node 20，仅在当前脚本进程中切换到该版本；不会修改 nvm 的默认 Node。'
+      printf '%s\n' "将使用已有 nvm 安装 Node ${NODE_INSTALL_MAJOR}（当前推荐 LTS），仅在当前脚本进程中切换到该版本；不会修改 nvm 的默认 Node。"
       ;;
     brew)
-      printf '%s\n' '将通过 Homebrew 安装 node@20，并只在当前脚本进程中加入该版本的路径；不会执行 brew link 或覆盖已有 Node。'
+      printf '%s\n' "将通过 Homebrew 安装 node@${NODE_INSTALL_MAJOR}（当前推荐 LTS），并只在当前脚本进程中加入该版本的路径；不会执行 brew link 或覆盖已有 Node。"
       ;;
     apt)
       printf '%s\n' '将下载 NodeSource 的安装配置脚本，并使用 sudo apt-get 安装 nodejs。这会修改系统级软件包。'
       ;;
     nvm-bootstrap)
-      printf '%s\n' '将从 nvm 官方 GitHub 下载并执行固定版本的 nvm 安装脚本。它会创建 ~/.nvm，并可能更新你的 shell 配置；随后安装 Node 20，但不会修改 nvm 的默认 Node。'
+      printf '%s\n' "将从 nvm 官方 GitHub 下载并执行固定版本的 nvm 安装脚本。它会创建 ~/.nvm，并可能更新你的 shell 配置；随后安装 Node ${NODE_INSTALL_MAJOR}（当前推荐 LTS），但不会修改 nvm 的默认 Node。"
       ;;
     *)
-      printf '%s\n' '未找到可用的安装方式。请从 https://nodejs.org/ 手动安装 Node 20 或更高版本。'
+      printf '%s\n' "未找到可用的安装方式。请从 https://nodejs.org/ 手动安装当前 LTS（目前为 Node ${NODE_INSTALL_MAJOR}）；Node ${NODE_MIN} 或更高版本可运行本项目。"
       ;;
   esac
 }
@@ -110,9 +113,9 @@ confirm_install() {
 install_via_nvm() {
   load_nvm
   command -v nvm >/dev/null 2>&1 || { red 'nvm 加载失败。'; return 1; }
-  blue "使用 nvm 安装 Node ${NODE_MIN}…"
-  nvm install "$NODE_MIN" || { red 'nvm 安装 Node 失败。'; return 1; }
-  nvm use "$NODE_MIN" || { red '无法在当前脚本中启用 Node。'; return 1; }
+  blue "使用 nvm 安装 Node ${NODE_INSTALL_MAJOR}（当前推荐 LTS）…"
+  nvm install "$NODE_INSTALL_MAJOR" || { red 'nvm 安装 Node 失败。'; return 1; }
+  nvm use "$NODE_INSTALL_MAJOR" || { red '无法在当前脚本中启用 Node。'; return 1; }
 }
 
 install_via_nvm_bootstrap() {
@@ -134,21 +137,21 @@ install_via_nvm_bootstrap() {
 }
 
 install_via_brew() {
-  blue "使用 Homebrew 安装 node@${NODE_MIN}…"
-  brew install "node@${NODE_MIN}" || { red 'Homebrew 安装失败。'; return 1; }
+  blue "使用 Homebrew 安装 node@${NODE_INSTALL_MAJOR}（当前推荐 LTS）…"
+  brew install "node@${NODE_INSTALL_MAJOR}" || { red 'Homebrew 安装失败。'; return 1; }
   local brew_node
-  brew_node="$(brew --prefix "node@${NODE_MIN}")" || { red '无法确定 node@20 的安装位置。'; return 1; }
+  brew_node="$(brew --prefix "node@${NODE_INSTALL_MAJOR}")" || { red "无法确定 node@${NODE_INSTALL_MAJOR} 的安装位置。"; return 1; }
   if [ -x "$brew_node/bin/node" ]; then
     export PATH="$brew_node/bin:$PATH"
   fi
-  have_node || { red 'Homebrew 已执行，但当前脚本仍找不到 Node 20。'; return 1; }
+  have_node || { red "Homebrew 已执行，但当前脚本仍找不到 Node ${NODE_MIN} 或更高版本。"; return 1; }
 }
 
 install_via_apt() {
   local installer_file
   installer_file="$(mktemp "${TMPDIR:-/tmp}/ui-design-workflow-nodesource.XXXXXX")" || { red '无法创建 NodeSource 临时安装文件。'; return 1; }
-  blue "下载 NodeSource 的 Node ${NODE_MIN} 配置脚本…"
-  if ! curl -fsSL "https://deb.nodesource.com/setup_${NODE_MIN}.x" -o "$installer_file"; then
+  blue "下载 NodeSource 的 Node ${NODE_INSTALL_MAJOR} 配置脚本…"
+  if ! curl -fsSL "https://deb.nodesource.com/setup_${NODE_INSTALL_MAJOR}.x" -o "$installer_file"; then
     rm -f "$installer_file"
     red 'NodeSource 配置脚本下载失败。'
     return 1
@@ -162,7 +165,7 @@ install_via_apt() {
   blue '使用 apt 安装 nodejs…'
   sudo apt-get install -y nodejs || { red 'apt 安装失败。'; return 1; }
   hash -r
-  have_node || { red 'apt 已执行，但当前脚本仍找不到 Node 20。'; return 1; }
+  have_node || { red "apt 已执行，但当前脚本仍找不到 Node ${NODE_MIN} 或更高版本。"; return 1; }
 }
 
 install_node() {
@@ -213,8 +216,8 @@ main() {
     if [ "$confirmation_status" -ne 0 ]; then
       exit "$confirmation_status"
     fi
-    install_node "$method" || { red 'Node 安装未完成。请处理上方错误后重试，或手动安装 Node 20+。'; exit 1; }
-    have_node || { red '安装后仍未检测到 Node 20+。'; exit 1; }
+    install_node "$method" || { red "Node 安装未完成。请处理上方错误后重试，或手动安装当前 LTS（目前为 Node ${NODE_INSTALL_MAJOR}）。"; exit 1; }
+    have_node || { red "安装后仍未检测到 Node ${NODE_MIN} 或更高版本。"; exit 1; }
     green "Node $(node -v) 已就绪。"
   fi
 
