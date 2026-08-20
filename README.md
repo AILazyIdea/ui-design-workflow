@@ -70,7 +70,19 @@ bash install.sh
 powershell -ExecutionPolicy Bypass -File install.ps1
 ```
 
-两个脚本都会：检测 Node → 缺失/过旧就自动装 → 跑自检。装完直接看 [快速开始](README-FIRST.md) 或下面的命令。
+两个脚本都会先检测 Node。若缺失或低于 20，**只会在交互式终端里说明安装方式和可能影响，并等待你确认**；默认选项为不安装。已有 Node 时不会改动环境。
+
+在 CI、Agent 或其他无交互环境中，脚本会拒绝自动安装，避免卡住或意外改机器。只有你明确授权时才可使用：
+
+```bash
+# macOS / Linux
+bash install.sh --install-node --yes
+
+# Windows PowerShell
+powershell -ExecutionPolicy Bypass -File install.ps1 -InstallNode -Yes
+```
+
+自动安装只处理 Node.js。核心自检失败会以失败状态退出，不会显示“安装完成”。macOS/Linux 的安装脚本不会自动修改 nvm 的默认 Node；Windows 的交互式安装会保留 winget 自身的来源与协议确认。
 
 已有 Node 的话，直接跑：
 

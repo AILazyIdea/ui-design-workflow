@@ -16,6 +16,8 @@ npm test
 
 要求 Node.js 20 或更高版本。以上三步不需要 `npm install`、不联网，也不会读取或发送你的文件。若要生成截图，还需要本机 Chrome；可选视觉比对才需要执行 `npm install --include=optional`。
 
+若本机没有合适的 Node，可运行根目录 `install.sh` 或 `install.ps1`。它们会先说明采用的安装方式和对环境的影响，等待确认；在 CI、Agent 等无交互环境中默认拒绝安装。只有明确传入 `--install-node --yes`（PowerShell 为 `-InstallNode -Yes`）才会无提示安装。
+
 ## 交给其他 AI 试用
 
 把整个目录作为该 AI 的工作区，然后让它读取并执行：[统一评测任务](handoff/AI-EVALUATION-PROMPT.md)。这份任务会生成同一主题的两套页面：
