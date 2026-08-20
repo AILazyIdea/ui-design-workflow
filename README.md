@@ -124,18 +124,6 @@ node scripts/assemble-prompt.mjs --mode redesign --spec examples/spec.example.js
 
 ---
 
-## 真实案例：高速违法举报助手
-
-拿一张 macOS 桌面工具的截图试跑。识图模型一轮一轮地喊：
-
-> 「按钮高度 52/56/60px 不一致」「间距 16/20/32px 混用」
-
-但 `check-geometry` + `check-computed` 用源码证明：**四个按钮全是 44px，间距全在 4px 栅格上**。`verify-review` 直接把这些识图误报**证伪并剔除**，只有真实的问题（比如禁用态不可辨）被保留下来继续改。
-
-「只改颜色、不修按钮/间距」的坑，从机制上堵死了。
-
----
-
 ## 安全边界（很重要）
 
 - **不存任何模型 API Key**，识图用你自己挂的工具，本包不调用、不代管模型。
