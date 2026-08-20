@@ -1,0 +1,15 @@
+name: Feature proposal
+description: Propose a bounded improvement to the local workflow.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: User problem and current workaround
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed interface and compatibility impact
+    validations:
+      required: true

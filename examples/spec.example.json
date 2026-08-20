@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "1.0.0",
+  "mode": "reproduce",
+  "meta": {
+    "pageType": "product-landing-page",
+    "summary": "A concise mobile landing page for a task management product.",
+    "sourceDescription": "The reference has a single-column mobile layout, a dark green primary action and quiet neutral surfaces.",
+    "viewport": { "width": 390, "height": 1110, "dpr": 2 }
+  },
+  "designTokens": {
+    "background": { "value": "#FFFFFF" },
+    "colors": [
+      { "name": "primary", "hex": "#1A4D3A", "usage": "primary actions" },
+      { "name": "surface", "hex": "#FFFFFF", "usage": "page surface" },
+      { "name": "border", "hex": "#E5E7EB", "usage": "subtle separators" },
+      { "name": "text-primary", "hex": "#111827", "usage": "primary text" },
+      { "name": "text-secondary", "hex": "#6B7280", "usage": "supporting text" }
+    ],
+    "typography": {
+      "fontFamilies": [
+        { "role": "body", "family": "PingFang SC", "fallback": ["-apple-system", "BlinkMacSystemFont", "sans-serif"] },
+        { "role": "heading", "family": "PingFang SC", "fallback": ["-apple-system", "BlinkMacSystemFont", "sans-serif"] }
+      ],
+      "scale": [
+        { "level": "display", "size": 40, "weight": 700, "lineHeight": 1.2, "letterSpacing": "-0.02em" },
+        { "level": "body", "size": 16, "weight": 400, "lineHeight": 1.6 },
+        { "level": "caption", "size": 14, "weight": 400, "lineHeight": 1.5 }
+      ]
+    },
+    "spacing": { "unit": 4, "observedValues": [8, 12, 16, 20, 24, 32, 48, 64] },
+    "radius": { "values": [4, 8, 12, 16] },
+    "sizes": { "control": 40, "control-lg": 48 },
+    "shadows": [{ "name": "card", "value": "0 4px 16px rgba(0,0,0,0.06)" }],
+    "borders": [{ "name": "default", "value": "1px solid #E5E7EB" }]
+  },
+  "layout": { "regions": ["navigation", "hero", "task-card", "steps"], "columns": 1 },
+  "content": { "primaryAction": "Start a free trial" },
+  "interactions": { "primaryAction": "opens-sign-up" }
+}

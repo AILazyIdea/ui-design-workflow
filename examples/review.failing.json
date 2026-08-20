@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "mode": "review",
+  "artifacts": {
+    "candidate": ".ui-design-workflow/artifacts/candidate.png",
+    "reference": ".ui-design-workflow/artifacts/reference.png",
+    "viewport": { "width": 390, "height": 1110, "dpr": 2 }
+  },
+  "evaluator": { "kind": "human", "name": "release-reviewer" },
+  "issues": [{
+    "id": "primary-action-missing",
+    "severity": "P1",
+    "category": "functional",
+    "location": "hero",
+    "evidence": "The candidate screenshot has no visible primary action.",
+    "expected": "A visible keyboard-reachable primary action is present below the hero copy.",
+    "actual": "The action is absent.",
+    "fix": "Render the primary action and verify its focus state."
+  }],
+  "summary": "One blocking functional issue remains."
+}

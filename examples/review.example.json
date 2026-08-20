@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0.0",
+  "mode": "review",
+  "artifacts": {
+    "candidate": ".ui-design-workflow/artifacts/candidate.png",
+    "reference": ".ui-design-workflow/artifacts/reference.png",
+    "viewport": { "width": 390, "height": 1110, "dpr": 2 }
+  },
+  "evaluator": { "kind": "human", "name": "release-reviewer" },
+  "issues": [],
+  "summary": "No blocking issue found in the reviewed viewport."
+}

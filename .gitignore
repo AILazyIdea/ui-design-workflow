@@ -1,0 +1,25 @@
+node_modules/
+.DS_Store
+.env
+.env.*
+!.env.example
+.ui-design-workflow/artifacts/
+playwright-report/
+test-results/
+*.log
+
+# 试用输出只保留 README，其余（HTML/PNG/trial-results）不进入版本库
+playground/*
+!playground/README.md
+
+# 本地视觉评审配置（可能含命令路径/环境变量），只发布 example
+reviewers/registry.json
+
+# 本地打包产物（zip / tgz）不提交，发布用 GitHub Release 或 npm
+*.zip
+*.tgz
+
+# 私人研究草稿不公开
+design-qa-pipeline-audit.md
+research-synthesis-draft.md
+visual-regression-tools-research.md

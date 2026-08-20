@@ -1,0 +1,33 @@
+{
+  "_instructions": "Copy this file to reviewers/registry.json and edit it. The repo ships NO API keys and NO real adapters — each entry is just a command you point at your own vision-capable reviewer. The command reads a JSON envelope on stdin and MUST write one valid review JSON (schemas/review.schema.json) to stdout. command can be any executable: node, python3, a shell script, or curl wrapper.",
+  "reviewers": {
+    "doubao": {
+      "command": "node",
+      "args": ["reviewers/adapters/doubao.mjs"],
+      "env": {},
+      "timeoutMs": 120000,
+      "notes": "Example only: you write an adapter that calls your Doubao vision client and emits review JSON."
+    },
+    "openai": {
+      "command": "node",
+      "args": ["reviewers/adapters/openai.mjs"],
+      "env": { "OPENAI_MODEL": "gpt-4o" },
+      "timeoutMs": 120000,
+      "notes": "Example only: any OpenAI-compatible vision endpoint."
+    },
+    "anthropic": {
+      "command": "node",
+      "args": ["reviewers/adapters/anthropic.mjs"],
+      "env": {},
+      "timeoutMs": 120000,
+      "notes": "Example only."
+    },
+    "human": {
+      "command": "sh",
+      "args": ["reviewers/adapters/human.sh"],
+      "env": {},
+      "timeoutMs": 3600000,
+      "notes": "Example only: open the screenshot and wait for a human to type a review JSON."
+    }
+  }
+}

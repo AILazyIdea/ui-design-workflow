@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UI Design Specification 1.0.0",
+  "description": "Declarative reference only. The zero-dependency runtime validator scripts/lib/schema.mjs is the single source of truth and is stricter: it also checks hex color/format, font stack, spacing/radius bounds, shadow/border formats, unknown fields, size (1 MiB) and nesting-depth limits. Where this file and the runtime validator differ, the runtime validator wins.",
+  "type": "object",
+  "required": ["schemaVersion", "mode", "meta"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "mode": { "enum": ["reproduce", "redesign"] },
+    "meta": { "type": "object", "required": ["pageType", "summary"], "additionalProperties": false, "properties": { "pageType": { "type": "string", "minLength": 1, "maxLength": 120 }, "summary": { "type": "string", "minLength": 1, "maxLength": 8192 }, "sourceDescription": { "type": "string", "maxLength": 8192 }, "viewport": { "type": "object", "required": ["width", "height"], "additionalProperties": false, "properties": { "width": { "type": "integer", "minimum": 320, "maximum": 7680 }, "height": { "type": "integer", "minimum": 320, "maximum": 16384 }, "dpr": { "type": "number", "minimum": 1, "maximum": 2 } } } } },
+    "designTokens": { "type": "object", "additionalProperties": true, "description": "Structured design tokens (background, colors, typography, spacing, sizes, radius, shadows, borders); the runtime validator enforces hex and format limits per token." },
+    "layout": { "type": "object", "additionalProperties": true, "description": "Free-form layout facts (regions, columns, primaryAction, ...). The runtime validator bounds size/depth and rejects unknown top-level fields." },
+    "content": { "type": "object", "additionalProperties": true, "description": "Free-form product content (product name, heading, summary, tasks, progress, ...)." },
+    "interactions": { "type": "object", "additionalProperties": true, "description": "Free-form interaction facts (primaryAction, taskRows, ...)." }
+  }
+}

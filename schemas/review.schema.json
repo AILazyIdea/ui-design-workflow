@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UI Design Review 1.0.0",
+  "description": "Declarative reference only. The zero-dependency runtime validator scripts/lib/schema.mjs is the single source of truth and is stricter: it enforces issue id format, exact severity/category enums, non-empty evidence fields, the candidate/reference artifact path pattern, size and nesting limits, and unknown-field rejection. Where this file and the runtime validator differ, the runtime validator wins.",
+  "type": "object",
+  "required": ["schemaVersion", "mode", "artifacts", "evaluator", "issues"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "mode": { "const": "review" },
+    "artifacts": { "type": "object", "required": ["candidate", "viewport"], "additionalProperties": false, "properties": { "candidate": { "type": "string", "description": "Workspace-relative PNG path; the runtime validator enforces the artifact path pattern." }, "reference": { "type": "string" }, "viewport": { "type": "object" } } },
+    "evaluator": { "type": "object", "required": ["kind", "name"], "additionalProperties": false, "properties": { "kind": { "enum": ["human", "model", "automated"] }, "name": { "type": "string" }, "model": { "type": "string" } } },
+    "issues": { "type": "array", "items": { "type": "object", "required": ["id", "severity", "category", "location", "evidence", "expected", "actual", "fix"], "additionalProperties": false, "properties": { "id": { "type": "string" }, "severity": { "enum": ["P0", "P1", "P2"] }, "category": { "enum": ["fidelity", "functional", "accessibility", "responsive", "content", "visual"] }, "location": { "type": "string" }, "evidence": { "type": "string" }, "expected": { "type": "string" }, "actual": { "type": "string" }, "fix": { "type": "string" } } } },
+    "summary": { "type": "string" }
+  }
+}

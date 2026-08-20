@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UI Design Optimize Plan 1.0.0",
+  "description": "Declarative reference only. The zero-dependency runtime validator scripts/lib/schema.mjs (validateOptimizePlan) is the single source of truth and is stricter. An optimize plan is the vision model's one-shot output for the automated see -> fix -> re-see loop: it bundles a review of the current UI plus a redesign spec that fixes the issues the reviewer found.",
+  "type": "object",
+  "required": ["schemaVersion", "mode", "input", "review", "spec"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "mode": { "const": "optimize" },
+    "input": {
+      "type": "object",
+      "required": ["kind", "summary"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "enum": ["screenshot", "html", "description"] },
+        "summary": { "type": "string", "minLength": 1, "maxLength": 8192 },
+        "reference": { "type": "string", "maxLength": 241 }
+      }
+    },
+    "review": { "description": "A valid review object (mode: review). See schemas/review.schema.json.", "type": "object" },
+    "spec": { "description": "A valid spec object (mode: redesign, with designTokens). See schemas/spec.schema.json.", "type": "object" }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0.0",
+  "mode": "redesign",
+  "meta": {
+    "pageType": "personal-task-dashboard",
+    "summary": "A desktop morning task dashboard for one person. It should make the next useful action obvious without looking like a generic productivity landing page. The progress metric tracks 5 planned morning time-blocks, which are separate from the 3 listed tasks.",
+    "sourceDescription": "There is no source image. Preserve the specified information hierarchy, tokens, task states and compact working rhythm.",
+    "viewport": { "width": 1440, "height": 900, "dpr": 1 }
+  },
+  "designTokens": {
+    "background": { "value": "#F6F4EF" },
+    "colors": [
+      { "name": "ink", "hex": "#1D2B24", "usage": "primary text and navigation" },
+      { "name": "moss", "hex": "#315E4A", "usage": "primary action and active state" },
+      { "name": "clay", "hex": "#C96840", "usage": "deadline emphasis" },
+      { "name": "mist", "hex": "#E9EEE8", "usage": "quiet surface and progress fill" },
+      { "name": "line", "hex": "#D7DDD5", "usage": "separators" },
+      { "name": "paper", "hex": "#FFFEFB", "usage": "raised cards" }
+    ],
+    "typography": {
+      "fontFamilies": [
+        { "role": "display", "family": "SF Pro Display", "fallback": ["-apple-system", "BlinkMacSystemFont", "sans-serif"] },
+        { "role": "body", "family": "SF Pro Text", "fallback": ["-apple-system", "BlinkMacSystemFont", "sans-serif"] }
+      ],
+      "scale": [
+        { "level": "hero", "size": 42, "weight": 650, "lineHeight": 1.08, "letterSpacing": "-0.03em" },
+        { "level": "section", "size": 22, "weight": 650, "lineHeight": 1.2 },
+        { "level": "body", "size": 16, "weight": 500, "lineHeight": 1.45 },
+        { "level": "meta", "size": 13, "weight": 550, "lineHeight": 1.35 }
+      ]
+    },
+    "spacing": { "unit": 4, "observedValues": [8, 12, 16, 20, 24, 32, 40, 56] },
+    "radius": { "values": [8, 12, 16, 20] },
+    "shadows": [{ "name": "lift", "value": "0 12px 32px rgba(34,46,39,0.12)" }],
+    "borders": [{ "name": "quiet", "value": "1px solid #D7DDD5" }]
+  },
+  "layout": {
+    "regions": ["left navigation", "morning summary", "focus task", "task timeline", "compact progress aside"],
+    "columns": 12,
+    "primaryAction": "Add a task"
+  },
+  "content": {
+    "productName": "daymark",
+    "date": "Monday, March 10",
+    "heading": "Make room for the work that matters.",
+    "summary": "Three useful things before lunch. Everything else can wait.",
+    "focusTask": "Shape the research brief",
+    "tasks": [
+      "Send the customer interview outline",
+      "Review the onboarding empty state",
+      "Block 30 minutes for synthesis"
+    ],
+    "progress": "2 of 5 planned blocks protected",
+    "plannedBlocks": { "total": 5, "protected": 2 }
+  },
+  "interactions": {
+    "primaryAction": "opens-new-task-composer",
+    "taskRows": "toggle-complete"
+  }
+}
